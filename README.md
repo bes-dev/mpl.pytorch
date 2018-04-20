@@ -18,7 +18,7 @@ cd mpl
 python build.py
 ```
 
-### Using
+## Using
 
 ```python
 import mpl
