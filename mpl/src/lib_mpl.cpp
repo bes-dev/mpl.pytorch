@@ -32,7 +32,8 @@ extern "C" void compute_weights(const THFloatTensor *losses,
         float loss_q = pow(losses_data[i] / losses_data[size - 1], q);
         a[0] = a[1];
         a[1] += loss_q;
-        nu = float(c + i - pos) * loss_q - a[1];
+        c += 1;
+        nu = c * loss_q - a[1];
     }
 
     // compute alpha
@@ -40,9 +41,10 @@ extern "C" void compute_weights(const THFloatTensor *losses,
     if (nu < std::numeric_limits<float>::epsilon())
     {
         i += 1;
+        c += 1;
         a[0] = a[1];
     }
-    alpha = pow(a[0] / float(c + i - pos), 1.0 / q) * losses_data[size - 1];
+    alpha = pow(a[0] / c, 1.0 / q) * losses_data[size - 1];
 
     // compute weights
     float tau = 1.0 / (pow(n, 1.0 / q) * pow(m, 1.0 / p));
