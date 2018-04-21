@@ -25,5 +25,5 @@ import mpl
 import torch
 
 loss = torch.Tensor(1, 3, 3, 3).uniform_(0, 1)
-weights = mpl.MaxPoolingLoss(loss)
+loss = mpl.MaxPoolingLoss(loss)
 ```
