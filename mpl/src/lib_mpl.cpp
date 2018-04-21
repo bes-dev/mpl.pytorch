@@ -28,7 +28,7 @@ extern "C" void compute_weights(const THFloatTensor *losses,
     float a[2] = {0.0};
     int i = pos;
     float nu = 1.0;
-    for(; i < n && nu > std::numeric_limits<float>::epsilon(); ++i) {
+    for(; i < n && nu < std::numeric_limits<float>::epsilon(); ++i) {
         float loss_q = pow(losses_data[i] / losses_data[size - 1], q);
         a[0] = a[1];
         a[1] += loss_q;
