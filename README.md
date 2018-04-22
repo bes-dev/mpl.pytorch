@@ -24,6 +24,7 @@ python build.py
 import mpl
 import torch
 
+max_pooling_loss = mpl.MaxPoolingLoss(ratio=0.3, p=1.7, reduce=True)
 loss = torch.Tensor(1, 3, 3, 3).uniform_(0, 1)
-loss = mpl.MaxPoolingLoss(loss)
+loss = max_pooling_loss(loss)
 ```
