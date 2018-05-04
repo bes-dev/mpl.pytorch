@@ -2,12 +2,13 @@
 #include <limits>
 #include <cmath>
 
-extern "C" void compute_weights(const THFloatTensor *losses,
+extern "C" void compute_weights(int size,
+                                const THFloatTensor *losses,
                                 const THLongTensor *indices,
                                 THFloatTensor *weights,
                                 float ratio, float p)
 {
-    int size = losses->size[0];
+    // int size = losses->size[0];
     const float* losses_data = THFloatTensor_data(losses);
     const int64_t* indices_data = THLongTensor_data(indices);
     float* weights_data = THFloatTensor_data(weights);
@@ -27,18 +28,18 @@ extern "C" void compute_weights(const THFloatTensor *losses,
     int c = m - n + 1;
     float a[2] = {0.0};
     int i = pos;
-    float nu = 0.0;
-    for(; i < n && nu < std::numeric_limits<float>::epsilon(); ++i) {
+    float eta = 0.0;
+    for(; i < n && eta < std::numeric_limits<float>::epsilon(); ++i) {
         float loss_q = pow(losses_data[i] / losses_data[size - 1], q);
         a[0] = a[1];
         a[1] += loss_q;
         c += 1;
-        nu = c * loss_q - a[1];
+        eta = c * loss_q - a[1];
     }
 
     // compute alpha
     float alpha;
-    if (nu < std::numeric_limits<float>::epsilon())
+    if (eta < std::numeric_limits<float>::epsilon())
     {
         i += 1;
         c += 1;

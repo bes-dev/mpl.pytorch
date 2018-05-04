@@ -36,7 +36,7 @@ class MaxPoolingLoss(object):
         losses = losses.cpu()
         indices = indices.cpu()
         weights = torch.zeros(losses.size(0))
-        _mpl.compute_weights(losses, indices, weights, self.ratio, self.p)
+        _mpl.compute_weights(losses.size(0), losses, indices, weights, self.ratio, self.p)
         loss = loss.view(shape)
         weights = weights.view(shape)
         loss = weights * loss
