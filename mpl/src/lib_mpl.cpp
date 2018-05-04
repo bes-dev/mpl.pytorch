@@ -41,7 +41,6 @@ extern "C" void compute_weights(int size,
     float alpha;
     if (eta < std::numeric_limits<float>::epsilon())
     {
-        i += 1;
         c += 1;
         a[0] = a[1];
     }
