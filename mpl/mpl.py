@@ -29,16 +29,18 @@ class MaxPoolingLoss(object):
 
 
     def __call__(self, loss):
+        ic_cuda = loss.is_cuda
         shape = loss.size()
         loss = loss.view(-1)
         losses, indices = loss.sort()
-        loss = loss.cpu()
         losses = losses.cpu()
         indices = indices.cpu()
         weights = torch.zeros(losses.size(0))
         _mpl.compute_weights(losses.size(0), losses, indices, weights, self.ratio, self.p)
         loss = loss.view(shape)
         weights = weights.view(shape)
+        if is_cuda:
+            weights = weights.cuda()
         loss = weights * loss
         if self.reduce:
             loss = loss.sum()
