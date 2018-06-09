@@ -29,7 +29,7 @@ class MaxPoolingLoss(object):
 
 
     def __call__(self, loss):
-        ic_cuda = loss.is_cuda
+        is_cuda = loss.is_cuda
         shape = loss.size()
         loss = loss.view(-1)
         losses, indices = loss.sort()
